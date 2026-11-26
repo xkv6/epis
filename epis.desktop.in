@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=epis mail client
+Exec=@BINDIR@
+Icon=@ICONDIR@
+Terminal=false

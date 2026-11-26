@@ -87,15 +87,26 @@ gui/xdg-shell.o gui/xdg-decoration.o gui/clay.o:
 clean:
 	rm -f epis $(SRC:.c=.o) gui/*.o gui/*.inc gui/xdg-*.[ch]
 
+BINDIR = $(DESTDIR)$(PREFIX)/bin/epis
+ICONDIR = $(DESTDIR)$(PREFIX)/icons/hicolor/256x256/apps/epis-icon.png
+
 install: epis
 	mkdir -p $(DESTDIR)$(PREFIX)/bin $(DESTDIR)$(MANPREFIX)/man1
 	cp -f epis $(DESTDIR)$(PREFIX)/bin/epis
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/epis
 	cp -f epis.1 $(DESTDIR)$(MANPREFIX)/man1/epis.1
 	chmod 644 $(DESTDIR)$(MANPREFIX)/man1/epis.1
+	mkdir -p $(DESTDIR)$(PREFIX)/icons/hicolor/256x256/apps/
+	cp -f epis-icon.png $(DESTDIR)$(PREFIX)/icons/hicolor/256x256/apps/epis-icon.png
+	chmod 644 $(DESTDIR)$(PREFIX)/icons/hicolor/256x256/apps/epis-icon.png
+	sed 's|@BINDIR@|$(BINDIR)|g' epis.desktop.in > epis.desktop
+	sed -i 's|@ICONDIR@|$(ICONDIR)|g' epis.desktop
+	mv epis.desktop $(DESTDIR)$(PREFIX)/share/applications/epis.desktop
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/epis $(DESTDIR)$(MANPREFIX)/man1/epis.1
+	rm -f $(DESTDIR)$(PREFIX)/icons/hicolor/256x256/apps/epis-icon.png
+	rm -f $(DESTDIR)$(PREFIX)/share/applications/epis.desktop
 
 format:
 	indent -linux -l80 src/*.c src/*.h gui/ui.c gui/view.c gui/edit.c \
